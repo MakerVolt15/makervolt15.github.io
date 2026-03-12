@@ -1,16 +1,46 @@
 <!DOCTYPE HTML>
 <html lang="tr">
 	<head>
-		<title>Volt15 | Atölye</title>
+		<title>MakerVolt15 | Ana Sayfa</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 		<style>
-			body, input, select, textarea { font-family: 'Inter', sans-serif !important; }
-			#header nav ul { display: flex; flex-wrap: wrap; justify-content: center; }
-			#header nav ul li { border-left: none !important; }
+			/* TÜM HATALARI ÇÖZEN ÖZEL AYARLAR */
+			body, input, select, textarea, h1, h2, h3, a { 
+				font-family: 'Source Sans Pro', sans-serif !important; 
+				text-transform: none !important; /* Küçük i - Büyük İ karışıklığını durdurur */
+			}
+
+			/* Butonların kaymasını engelleyen ve hizalayan kısım */
+			#header nav ul { 
+				display: flex !important; 
+				flex-direction: row !important; 
+				justify-content: center !important; 
+				flex-wrap: wrap !important;
+				border: none !important;
+			}
+
+			#header nav ul li { 
+				display: inline-block !important;
+				border: 1px solid rgba(255, 255, 255, 0.2) !important;
+				margin: 5px !important;
+				padding: 0 !important;
+				width: 140px !important; /* Buton genişliğini sabitledik, artık kayamaz */
+				border-radius: 4px;
+			}
+
+			#header nav ul li a {
+				border-bottom: none !important;
+				display: block;
+				width: 100%;
+				line-height: 2.5em;
+				height: 2.5em;
+			}
+
+            .major { letter-spacing: 2px !important; }
 		</style>
 	</head>
 	<body class="is-preload">
@@ -19,8 +49,8 @@
 				<div class="logo"><span class="icon solid fa-bolt"></span></div>
 				<div class="content">
 					<div class="inner">
-						<h1>VOLT15</h1>
-						<p>Robotik Dünyasına Hoş Geldiniz</p>
+						<h1>MAKERVOLT15</h1>
+						<p>Robotik ve Elektronik Atölyesi</p>
 					</div>
 				</div>
 				<nav>
@@ -33,14 +63,15 @@
 			</header>
 			<div id="main">
 				<article id="about">
-					<h2 class="major">Hakkımda</h2>
-					<p>Ben MakerVolt15. Bu sitede yaptığım tüm projelerin detaylarını, kodlarını ve videolarını bulabilirsiniz.</p>
+					<h2 class="major">HAKKIMDA</h2>
+					<p>Merhaba! Ben Vefa. MakerVolt15 ile teknoloji üretiyorum.</p>
 				</article>
 				<article id="contact">
-					<h2 class="major">İletişim</h2>
+					<h2 class="major">İLETİŞİM</h2>
 					<ul class="icons">
-						<li><a href="https://github.com/makervolt15" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+						<li><a href="https://github.com/MakerVolt15" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
 						<li><a href="https://www.youtube.com/@Volt15-Vefa" class="icon brands fa-youtube"><span class="label">YouTube</span></a></li>
+						<li><a href="https://www.instagram.com/volt15.maker/" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
 					</ul>
 				</article>
 			</div>
@@ -51,4 +82,3 @@
 		<script src="assets/js/main.js"></script>
 	</body>
 </html>
-
