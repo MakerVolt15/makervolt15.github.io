@@ -1,46 +1,695 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="tr">
-	<head>
-		<title>Proje Arşivi | MakerVolt15</title>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="assets/css/main.css" />
-		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-		<style>
-			body, input, select, textarea { font-family: 'Inter', sans-serif !important; }
-			.video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1); }
-			.video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-			.project-card { border-bottom: 2px solid rgba(255, 255, 255, 0.1); padding-bottom: 3rem; margin-bottom: 3rem; }
-		</style>
-	</head>
-	<body class="is-preload">
-		<div id="wrapper">
-			<header id="header">
-				<nav><ul><li><a href="index.html">ANA SAYFAYA DÖN</a></li></ul></nav>
-			</header>
-			<div id="main" style="display: flex;">
-				<article id="list" style="display: block;">
-					<h2 class="major">PROJE ARŞİVİ</h2>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projeler | MakerVolt15</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #111111;
+      --surface2: #161616;
+      --border: #222222;
+      --yellow: #f5c400;
+      --orange: #ff6b00;
+      --text: #e8e8e8;
+      --muted: #666666;
+      --grid: rgba(245,196,0,0.04);
+    }
 
-					<section class="project-card">
-						<h3>Robot Kol Projesi</h3>
-						<div class="video-wrapper">
-							<iframe src="https://www.youtube.com/embed/VİDEO_ID_BURAYA" frameborder="0" allowfullscreen></iframe>
-						</div>
-						<p><strong>Malzemeler:</strong> Arduino Uno, 4x Servo Motor, Potansiyometre.</p>
-						<p>Açıklama: Manuel kontrollü robot kol çalışmam. Kodlara aşağıdaki butondan ulaşabilirsiniz.</p>
-						<ul class="actions">
-							<li><a href="https://github.com/MakerVolt15" class="button primary small">GITHUB REPOSU</a></li>
-						</ul>
-					</section>
-					<p style="opacity: 0.5;">Yeni projeler yüklendikçe buraya eklenecektir...</p>
-				</article>
-			</div>
-			<footer id="footer"><p class="copyright">&copy; MakerVolt15.</p></footer>
-		</div>
-		<div id="bg"></div>
-		<script src="assets/js/jquery.min.js"></script>
-		<script src="assets/js/main.js"></script>
-	</body>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 3rem;
+      height: 64px;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.1em;
+      color: var(--yellow);
+      text-decoration: none;
+    }
+
+    .nav-logo span { color: var(--text); }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active { color: var(--yellow); }
+
+    /* PAGE HEADER */
+    .page-header {
+      position: relative;
+      z-index: 1;
+      padding: 9rem 3rem 4rem;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .page-header-bg {
+      position: absolute;
+      right: -1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(6rem, 15vw, 14rem);
+      color: rgba(245,196,0,0.04);
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .breadcrumb {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .breadcrumb a { color: var(--orange); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--yellow); }
+
+    .page-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      letter-spacing: 0.05em;
+      line-height: 1;
+      margin-bottom: 1rem;
+    }
+
+    .page-title span { color: var(--yellow); }
+
+    .page-desc {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 480px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.7;
+    }
+
+    /* PROJECTS GRID */
+    .projects-section {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 3rem 7rem;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+      gap: 2px;
+    }
+
+    /* PROJECT CARD */
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s;
+      animation: fadeUp 0.5s ease both;
+    }
+
+    .project-card:hover {
+      border-color: var(--yellow);
+      transform: translateY(-3px);
+    }
+
+    /* YT EMBED CONTAINER */
+    .yt-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      overflow: hidden;
+    }
+
+    .yt-container iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .yt-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      background: #0d0d0d;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+    }
+
+    .yt-placeholder .play-btn {
+      width: 56px;
+      height: 56px;
+      background: var(--yellow);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .yt-placeholder:hover .play-btn {
+      transform: scale(1.1);
+      background: #fff;
+    }
+
+    .yt-placeholder .play-btn svg {
+      width: 22px;
+      height: 22px;
+      fill: #000;
+      margin-left: 3px;
+    }
+
+    .yt-placeholder .yt-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    /* CARD BODY */
+    .card-body {
+      padding: 1.75rem 2rem;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border: 1px solid var(--orange);
+      color: var(--orange);
+    }
+
+    .card-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--muted);
+    }
+
+    .card-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.7rem;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.75rem;
+      line-height: 1.1;
+    }
+
+    .card-desc {
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: #888;
+      margin-bottom: 1.5rem;
+    }
+
+    /* MATERIALS */
+    .materials-toggle {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--yellow);
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      color: var(--text);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.2s;
+      margin-bottom: 0;
+    }
+
+    .materials-toggle:hover { background: rgba(245,196,0,0.06); }
+
+    .toggle-icon {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.25s;
+      color: var(--yellow);
+    }
+
+    .materials-toggle.open .toggle-icon { transform: rotate(45deg); }
+
+    .materials-panel {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-top: none;
+      border-left: 3px solid var(--yellow);
+      margin-bottom: 1rem;
+    }
+
+    .materials-panel.open { max-height: 500px; }
+
+    .materials-inner {
+      padding: 1rem 1rem 0.75rem;
+    }
+
+    .material-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      gap: 1rem;
+    }
+
+    .material-item:last-child { border-bottom: none; }
+
+    .material-name {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .material-name::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      background: var(--yellow);
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .material-qty {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .material-link {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--orange);
+      text-decoration: none;
+      white-space: nowrap;
+      padding: 0.1rem 0.4rem;
+      border: 1px solid var(--orange);
+      transition: all 0.2s;
+    }
+
+    .material-link:hover {
+      background: var(--orange);
+      color: #000;
+    }
+
+    /* CARD ACTIONS */
+    .card-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.25rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-gh {
+      background: var(--yellow);
+      color: #000;
+      font-weight: 700;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .btn-gh:hover { background: #fff; transform: translateY(-1px); }
+
+    .btn-yt {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-yt:hover {
+      border-color: #ff0000;
+      color: #ff4444;
+    }
+
+    .btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* ADD PROJECT NOTICE */
+    .add-project-card {
+      background: transparent;
+      border: 2px dashed var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      color: var(--muted);
+      text-align: center;
+      min-height: 300px;
+    }
+
+    .add-icon {
+      width: 48px;
+      height: 48px;
+      border: 2px dashed var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      color: var(--border);
+    }
+
+    .add-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* FOOTER */
+    footer {
+      position: relative;
+      z-index: 1;
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      color: var(--yellow);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--yellow); }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .page-header, .projects-section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="index.html">MAKER<span>VOLT15</span></a>
+    <ul class="nav-links">
+      <li><a href="projeler.html" class="active">Projeler</a></li>
+      <li><a href="index.html#about">Hakkımda</a></li>
+      <li><a href="index.html#contact">İletişim</a></li>
+    </ul>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="page-header-bg">PROJELER</div>
+    <div class="breadcrumb"><a href="index.html">Ana Sayfa</a> / Projeler</div>
+    <h1 class="page-title">TÜM <span>PROJELERİM</span></h1>
+    <p class="page-desc">Her proje için YouTube videosu, malzeme listesi ve GitHub kaynak kodları.</p>
+  </div>
+
+  <!-- PROJECTS -->
+  <section class="projects-section">
+    <div class="projects-grid">
+
+      <!-- ==================== PROJE 1 ==================== -->
+      <!-- YT video ID'yi kendi video linkinden al: youtube.com/watch?v=XXXX — XXXX kısmını al -->
+      <div class="project-card" style="animation-delay:0.1s">
+        <div class="yt-container">
+          <!-- YT video id değiştir: src="https://www.youtube.com/embed/VIDEO_ID" -->
+          <!-- Eğer video yoksa placeholder gösterilir, varsa iframe yap -->
+          <div class="yt-placeholder" onclick="loadYT(this, 'VIDEO_ID_1')">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <div class="yt-label">Videoyu İzle</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-tag">Arduino</span>
+            <span class="card-num">#001</span>
+          </div>
+          <h2 class="card-title">Proje Başlığı Buraya</h2>
+          <p class="card-desc">Bu projeye ait kısa açıklama buraya gelecek. Ne yaptığını, nasıl çalıştığını 2-3 cümleyle anlat.</p>
+
+          <!-- MALZEME LİSTESİ -->
+          <button class="materials-toggle" onclick="toggleMaterials(this)">
+            <span>⚡ Malzeme Listesi</span>
+            <span class="toggle-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </button>
+          <div class="materials-panel">
+            <div class="materials-inner">
+              <div class="material-item">
+                <span class="material-name">Arduino Uno</span>
+                <span class="material-qty">x1</span>
+                <a href="https://www.amazon.com.tr/s?k=arduino+uno" target="_blank" class="material-link">Satın Al</a>
+              </div>
+              <div class="material-item">
+                <span class="material-name">Malzeme Adı</span>
+                <span class="material-qty">x2</span>
+                <a href="#" target="_blank" class="material-link">Link</a>
+              </div>
+              <div class="material-item">
+                <span class="material-name">Malzeme Adı</span>
+                <span class="material-qty">x1</span>
+                <a href="#" target="_blank" class="material-link">Link</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <a href="https://github.com/MakerVolt15" target="_blank" class="btn btn-gh">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.22.66-.48v-1.7C6.73 19.9 6.14 18 6.14 18c-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.16.57.67.47C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z"/></svg>
+              GitHub'da Kodları Gör
+            </a>
+            <a href="https://www.youtube.com/@Volt15-Vefa" target="_blank" class="btn btn-yt">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.3v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8l6.6 3.8-6.6 3.7z"/></svg>
+              YT
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== PROJE 2 ==================== -->
+      <div class="project-card" style="animation-delay:0.2s">
+        <div class="yt-container">
+          <div class="yt-placeholder" onclick="loadYT(this, 'VIDEO_ID_2')">
+            <div class="play-btn">
+              <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <div class="yt-label">Videoyu İzle</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-tag">Robotik</span>
+            <span class="card-num">#002</span>
+          </div>
+          <h2 class="card-title">İkinci Proje Başlığı</h2>
+          <p class="card-desc">Bu projeye ait açıklama. Sensörler, motorlar veya kullandığın sistemleri kısaca anlat.</p>
+
+          <button class="materials-toggle" onclick="toggleMaterials(this)">
+            <span>⚡ Malzeme Listesi</span>
+            <span class="toggle-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </span>
+          </button>
+          <div class="materials-panel">
+            <div class="materials-inner">
+              <div class="material-item">
+                <span class="material-name">Raspberry Pi 4</span>
+                <span class="material-qty">x1</span>
+                <a href="https://www.robotistan.com" target="_blank" class="material-link">Satın Al</a>
+              </div>
+              <div class="material-item">
+                <span class="material-name">L298N Motor Sürücü</span>
+                <span class="material-qty">x1</span>
+                <a href="https://www.robotistan.com" target="_blank" class="material-link">Satın Al</a>
+              </div>
+              <div class="material-item">
+                <span class="material-name">DC Motor</span>
+                <span class="material-qty">x2</span>
+                <a href="#" target="_blank" class="material-link">Link</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <a href="https://github.com/MakerVolt15" target="_blank" class="btn btn-gh">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.22.66-.48v-1.7C6.73 19.9 6.14 18 6.14 18c-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8c.85 0 1.71.11 2.51.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.16.57.67.47C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z"/></svg>
+              GitHub'da Kodları Gör
+            </a>
+            <a href="https://www.youtube.com/@Volt15-Vefa" target="_blank" class="btn btn-yt">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23 7s-.3-2-1.2-2.8c-1.1-1.2-2.4-1.2-3-1.3C16.2 2.8 12 2.8 12 2.8s-4.2 0-6.8.2c-.6.1-1.9.1-3 1.3C1.3 5 1 7 1 7S.7 9.1.7 11.3v2c0 2.1.3 4.2.3 4.2s.3 2 1.2 2.8c1.1 1.2 2.6 1.1 3.3 1.2C7.5 21.5 12 21.5 12 21.5s4.2 0 6.8-.2c.6-.1 1.9-.1 3-1.3.9-.8 1.2-2.8 1.2-2.8s.3-2.1.3-4.2v-2C23.3 9.1 23 7 23 7zM9.7 15.5V8l6.6 3.8-6.6 3.7z"/></svg>
+              YT
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== YENİ PROJE EKLEMEK İÇİN ==================== -->
+      <!-- Yukarıdaki proje kartını kopyala, yapıştır, bilgileri doldur -->
+
+      <!-- PLACEHOLDER: Daha fazla proje -->
+      <div class="add-project-card">
+        <div class="add-icon">+</div>
+        <div class="add-title">Yakında Yeni Projeler</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">MAKERVOLT15</div>
+    <div class="footer-copy">© 2025 MakerVolt15 — Vefa Köse</div>
+    <div class="footer-links">
+      <a href="https://github.com/MakerVolt15" target="_blank">GitHub</a>
+      <a href="https://www.youtube.com/@Volt15-Vefa" target="_blank">YouTube</a>
+      <a href="https://www.instagram.com/volt15.maker/" target="_blank">Instagram</a>
+    </div>
+  </footer>
+
+  <script>
+    // Malzeme listesi aç/kapat
+    function toggleMaterials(btn) {
+      btn.classList.toggle('open');
+      const panel = btn.nextElementSibling;
+      panel.classList.toggle('open');
+    }
+
+    // YT video yükle (tıklandığında)
+    function loadYT(placeholder, videoId) {
+      if (videoId === 'VIDEO_ID_1' || videoId === 'VIDEO_ID_2') {
+        // Henüz video ID eklenmemiş
+        alert('YouTube video ID henüz eklenmedi! src içine kendi video ID\'ni yaz.');
+        return;
+      }
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      placeholder.parentNode.replaceChild(iframe, placeholder);
+    }
+  </script>
+</body>
 </html>
